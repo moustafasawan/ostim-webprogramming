@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ostim.Models;
+using System;
 
 namespace Ostim.Controllers
 {
@@ -62,16 +63,39 @@ namespace Ostim.Controllers
             return View(_employees);
         }
 
-        // GET: EmployeeController/Details/5
         public ActionResult Details(int id)
         {
             Employee employee = _employees.FirstOrDefault(e => e.Id == id);
             if (employee == null)
             {
-                return HttpNotFound(); // Return a 404 error
+                return HttpNotFound();
             }
             return View(employee);
         }
+
+        public ActionResult Edit(int id)
+        {
+            Employee employee = _employees.FirstOrDefault(e => e.Id == id);
+
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, Employee employee)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Update");
+            }
+            return View(employee);
+        }
+
 
         private ActionResult HttpNotFound()
         {
