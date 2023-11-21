@@ -95,6 +95,26 @@ namespace Ostim.Controllers
             }
             return View(employee);
         }
+        
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Employee empolyee)
+        {
+            if (ModelState.IsValid)
+            {
+                using var context = new EmployeeDbContext();
+                context.Employee.Add(empolyee);
+                context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            ModelState.AddModelError("", "Something went wrong");
+            return View(empolyee);
+        }
 
 
         private ActionResult HttpNotFound()
