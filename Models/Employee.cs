@@ -18,6 +18,7 @@ namespace Ostim.Models
         public string Position { get; set; }
         public string Image { get; set; }
 
-
+        public Company Company { get; set; }
+        public SalaryInfo SalaryInfo { get; set; }
     }
 }
