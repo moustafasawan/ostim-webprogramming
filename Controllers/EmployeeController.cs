@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Ostim.Models;
 using System;
 
@@ -120,6 +121,22 @@ namespace Ostim.Controllers
         private ActionResult HttpNotFound()
         {
             throw new NotImplementedException();
+        }
+
+        public IActionResult SalaryDetails()
+        {
+            using var context = new EmployeeDbContext();
+            var employeeSalaryDetails = context.Employee
+                .Select(e => new EmployeeSalaryDto
+                {
+                    Id = e.Id,
+                    FullName = e.FullName,
+                    CompanyName = e.Company.Name,
+                    NetSalary = e.SalaryInfo.Net,
+                    GrossSalary = e.SalaryInfo.Gross
+                })
+                .ToList();
+            return View(employeeSalaryDetails);
         }
     }
 }
